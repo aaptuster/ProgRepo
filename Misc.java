@@ -5,6 +5,9 @@ public class Misc {
 
 	private static int numberOfLineSegments(Point[] pointArr)
 	{
+		if (pointArr.length < MIN_SEGMENT_LENGTH + 1)
+			return 0;
+		
 		int lineCounter = 0;
 		Sorter a = new Sorter<Point>(pointArr);
 		a.quickSort();
@@ -12,14 +15,11 @@ public class Misc {
 		// now pointArr is sorted from x and then y
 		// now start with the first point and create a slope with all other points except itself
 		// sort this slope array, that holds the information of its point too
-		
-		for (int i = 0; i < pointArr.length; i++)
+		for (int i = 0; i < pointArr.length-MIN_SEGMENT_LENGTH ; i++)
 		{
-			Slope[] slopeArr = new Slope[pointArr.length-1];
-			for (int j = 0, k=0; j < pointArr.length; j++)
+			Slope[] slopeArr = new Slope[pointArr.length-1-i];
+			for (int j = i+1, k=0; j < pointArr.length; j++)
 			{
-				if (i == j)
-					continue;
 				slopeArr[k++] =  new Slope(pointArr[i], pointArr[j],pointArr[i].slopeTo(pointArr[j]));
 			}
 			
@@ -27,7 +27,7 @@ public class Misc {
 			Sorter slopeSort = new Sorter<Misc.Slope>(slopeArr);
 			slopeSort.quickSort();
 			
-			// now all the slopes ar sorted.
+			// now all the slopes are sorted.
 			// Traverse  the slope object to see if adjacent sort arrays are equal and there are at least more than three. 
 			// print the slopeArray that was found.
 			int lineLength = 0;
@@ -39,9 +39,9 @@ public class Misc {
 				if (x == slopeArr.length-2 || 
 						slopeArr[x].compareTo(slopeArr[x+1]) != 0)
 				{
-					if (lineLength >= MIN_SEGMENT_LENGTH && x-lineLength == i )
+					if (lineLength >= MIN_SEGMENT_LENGTH)
 					{
-						System.out.printf("\n line found with length %d and point %s and %s", lineLength, pointArr[x-lineLength].toString(), pointArr[x+1].toString());
+						System.out.printf("\n line found with length %d and point %s", lineLength, pointArr[i].toString());
 						lineCounter++;
 						lineLength = 0;
 					}
@@ -49,7 +49,6 @@ public class Misc {
 			}
 			
 		}
-		System.out.printf("\nNumber of lines found is %d",lineCounter);
 		return lineCounter;
 	}
 	
@@ -85,6 +84,6 @@ public class Misc {
 		}
 		
 		int numLineSegment = numberOfLineSegments(pointArr);
-		System.out.printf("Number of libne segments is %d", numLineSegment);
+		System.out.printf("\nNumber of line segments is %d", numLineSegment);
 	}
 }
