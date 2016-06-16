@@ -1,7 +1,7 @@
 
 public class Queue<T extends Comparable<? super T>> {
 
-	private final static int MAX_ARR_SIZE = 100;
+	private final static int MAX_ARR_SIZE = 1000;
 	private Object[] m_queueArr = null;
 	private Stack<T> m_stack1;
 	private Stack<T> m_stack2;
@@ -61,6 +61,11 @@ public class Queue<T extends Comparable<? super T>> {
 	public boolean isSingleElem()
 	{
 		return (m_front == m_rear);
+	}
+	
+	public boolean isEmpty()
+	{
+		return (m_rear < m_front);
 	}
 	
 	
